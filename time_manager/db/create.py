@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
-    postgres_host: str = '127.0.0.1'
+    postgres_host: str = 'postgres'
     postgres_db: str = 'db'
     postgres_password: str = 'password'
     postgres_user: str = 'postgres'
