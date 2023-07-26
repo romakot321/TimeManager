@@ -4,35 +4,28 @@ from sqlalchemy import Integer
 from sqlalchemy import ForeignKey
 from sqlalchemy import Date
 from sqlalchemy import Text
+from sqlalchemy import PrimaryKeyConstraint
 from time_manager.db.base import Base
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, autoincrement=True, primary_key=True,
-                index=True)
+    id = Column(Integer, autoincrement=True, primary_key=True, index=True)
     first_name = Column(String, nullable=False)
     second_name = Column(String, nullable=False)
     job_title = Column(String, nullable=True)
-    password = Column(String, nullable=False)
 
 
-class HourNote(Base):
-    __tablename__ = "hours"
+class Note(Base):
+    __tablename__ = "notes"
 
-    id = Column(Integer, autoincrement=True, primary_key=True,
-                index=True)
-    user_id = Column(ForeignKey('users.id'))
+    user_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     date = Column(Date, nullable=False)
-    hours = Column(Integer, nullable=False)
-
-
-class TaskNote(Base):
-    __tablename__ = "tasks"
-
-    id = Column(Integer, autoincrement=True, primary_key=True,
-                index=True)
-    user_id = Column(ForeignKey('users.id'))
-    date = Column(Date, nullable=False)
+    minutes = Column(Integer, nullable=False, default=0)
     text = Column(Text, nullable=False)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('user_id', 'date'),
+        {},
+    )

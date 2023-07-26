@@ -1,3 +1,4 @@
 from . import (
-    user
+    user,
+    note
 )

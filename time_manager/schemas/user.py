@@ -11,7 +11,7 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    password: str
+    pass
 
 
 class User(UserBase):
@@ -22,7 +22,6 @@ class UserUpdate(BaseModel):
     first_name: str | None
     second_name: str | None
     job_title: str | None
-    password: str | None
 
     class Config:
         from_attributes = True

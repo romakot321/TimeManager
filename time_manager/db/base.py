@@ -7,7 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 
-from .create import settings
+from time_manager.db.create import settings
+
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +38,7 @@ async_session = sessionmaker(
     autocommit=False
 )
 
-from .tables import *
+from time_manager.db.tables import *
 
 
 async def init_models():
