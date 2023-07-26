@@ -8,10 +8,10 @@ logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
-    postgres_host: str = '127.0.0.1'
-    postgres_db: str = 'db'
-    postgres_password: str = 'password'
-    postgres_user: str = 'postgres'
+    POSTGRES_HOST: str = '127.0.0.1'
+    POSTGRES_DB: str = 'db'
+    POSTGRES_PASSWORD: str = 'password'
+    POSTGRES_USER: str = 'postgres'
 
 
 settings = Settings()
@@ -38,8 +38,8 @@ async def connect_create_if_not_exists(user, database, password, host):
 
 def run_init_db():
     asyncio.run(connect_create_if_not_exists(
-        settings.postgres_user,
-        settings.postgres_db,
-        settings.postgres_password,
-        settings.postgres_host))
+        settings.POSTGRES_USER,
+        settings.POSTGRES_DB,
+        settings.POSTGRES_PASSWORD,
+        settings.POSTGRES_HOST))
     logger.info('DB initialization is done')
