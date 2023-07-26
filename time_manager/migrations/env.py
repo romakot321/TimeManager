@@ -1,5 +1,6 @@
 import asyncio
 from logging.config import fileConfig
+import os
 
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
@@ -11,6 +12,10 @@ from alembic import context
 # access to the values within the .ini file in use.
 config = context.config
 
+config.set_section_option(
+    config.config_ini_section, "POSTGRES_PASSWORD",
+    os.environ.get("POSTGRES_PASSWORD")
+)
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:

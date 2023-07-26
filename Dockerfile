@@ -5,7 +5,7 @@ RUN pip3 install -r requirements.txt
 COPY setup.py ./
 COPY ./time_manager ./time_manager
 RUN pip3 install .
-CMD cd time_api && \
+CMD cd time_manager && \
         init_db && \
         alembic -c ./alembic.prod.ini upgrade head && \
         cd /app && \

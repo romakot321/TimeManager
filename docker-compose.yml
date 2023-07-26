@@ -5,8 +5,11 @@ services:
     restart: always
     depends_on:
       - "postgres"
-    env_file:
-      - .variables.env
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=db
+      - POSTGRES_HOST=postgres
     ports:
       - "8080:80"
     networks:
@@ -15,7 +18,10 @@ services:
   postgres:
     image: postgres
     restart: always
-    env_file:
-      - .variables.env
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=db
+      - POSTGRES_HOST=postgres
     networks:
       default:
