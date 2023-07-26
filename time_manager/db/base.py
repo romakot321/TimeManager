@@ -13,8 +13,8 @@ from time_manager.db.create import settings
 logger = logging.getLogger(__name__)
 
 DATABASE_URL = f'postgresql+asyncpg://' \
-               f'{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}' \
-               f'@{settings.POSTGRES_HOST}/{settings.POSTGRES_DB}'
+               f'{settings.postgres_user}:{settings.postgres_password}' \
+               f'@{settings.postgres_host}/{settings.postgres_db}'
 
 engine = create_async_engine(
     DATABASE_URL,
