@@ -13,7 +13,7 @@ install_requires = [
 setup(
     name='time_manager',
     version="0.0.3.dev1",
-    description='Lyceum API',
+    description='Time Managment API',
     platforms=['POSIX'],
     packages=find_packages(),
     include_package_data=True,
