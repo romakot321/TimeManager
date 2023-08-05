@@ -1,10 +1,9 @@
-import asyncpg.exceptions
-
 from time_manager.services.base import BaseService
 from time_manager.db import tables
 from time_manager import schemas
 
 import datetime as dt
+import calendar
 import logging
 
 from sqlalchemy import select, exc, func
@@ -67,11 +66,38 @@ class NoteService(BaseService):
         except exc.IntegrityError:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
-    async def get_summary(self, user_id: int):
+    async def get_summary(self, user_id: int, year: int, month: int, part: int):
         query = select(func.sum(tables.Note.minutes))
         query = query.filter_by(user_id=user_id)
+        month_start, month_end = self.get_date_range(year, month, part)
+        query = query.filter(tables.Note.date >= month_start)
+        query = query.filter(tables.Note.date <= month_end)
         try:
-            minutes = await self.session.scalar(query)
+            minutes = await self.session.scalar(query) or 0
             return schemas.note.NoteSummary(minutes=minutes)
         except exc.IntegrityError:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+    @staticmethod
+    def get_date_range(year: int, month: int, part: int | None) -> tuple[dt.date, dt.date]:
+        if year < 2000:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+        match part:
+            case 1:
+                start_day = 1
+                end_day = 15
+            case 2:
+                start_day = 16
+                end_day = calendar.monthrange(year, month)[1]
+            case None:
+                start_day = 1
+                end_day = calendar.monthrange(year, month)[1]
+            case _:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+        try:
+            month_start = dt.date(year=year, month=month, day=start_day)
+            month_end = dt.date(year=year, month=month, day=end_day)
+        except ValueError:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+        return month_start, month_end

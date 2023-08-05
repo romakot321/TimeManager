@@ -43,7 +43,7 @@ class UserService(BaseService):
             await self.session.commit()
         except exc.IntegrityError:
             await self.session.rollback()
-            return await self.get(user_id)
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
         return user
 
     async def delete(self, user_id: int):
