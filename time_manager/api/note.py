@@ -60,7 +60,7 @@ async def create_note(
     return await service.create(user_id, date, schema)
 
 
-@router.put(
+@router.patch(
     '/{user_id}/{date}',
     response_model=schemas.note.Note
 )

@@ -1,8 +1,6 @@
 import logging
 
-from fastapi import APIRouter, Depends
-from time_manager.services.user import UserService
-from time_manager import schemas
+from fastapi import APIRouter
 
 
 logger = logging.getLogger(__name__)

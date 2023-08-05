@@ -24,5 +24,5 @@ class Note(NoteBase):
 
 
 class NoteUpdate(BaseModel):
-    minutes: int | None
-    text: str | None
+    minutes: int | None = None
+    text: str | None = None

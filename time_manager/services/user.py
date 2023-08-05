@@ -2,7 +2,7 @@ from time_manager.services.base import BaseService
 from time_manager.db import tables
 from time_manager.schemas import user as user_schemas
 
-from sqlalchemy import select
+from sqlalchemy import select, exc
 from fastapi import status
 from fastapi.exceptions import HTTPException
 
@@ -32,11 +32,17 @@ class UserService(BaseService):
         query = select(tables.User)
         query = query.filter_by(id=user_id)
         user = await self.session.scalar(query)
+        if user is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         user.first_name = user_schema.first_name or user.first_name
         user.second_name = user_schema.second_name or user.second_name
         user.job_title = user_schema.job_title or user.job_title
         self.session.add(user)
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except exc.IntegrityError:
+            await self.session.rollback()
+            return await self.get(user_id)
         return user
 
     async def delete(self, user_id: int):

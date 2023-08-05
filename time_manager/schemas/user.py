@@ -19,9 +19,9 @@ class User(UserBase):
 
 
 class UserUpdate(BaseModel):
-    first_name: str | None
-    second_name: str | None
-    job_title: str | None
+    first_name: str | None = None
+    second_name: str | None = None
+    job_title: str | None = None
 
     class Config:
         from_attributes = True

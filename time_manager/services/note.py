@@ -37,8 +37,8 @@ class NoteService(BaseService):
     ):
         query = select(tables.Note).filter_by(user_id=user_id, date=date)
         note: tables.Note = await self.session.scalar(query)
-        note.minutes = note_schema.minutes
-        note.text = note_schema.text
+        note.minutes = note_schema.minutes or note.minutes
+        note.text = note_schema.text or note.text
         self.session.add(note)
         try:
             await self.session.commit()
