@@ -34,6 +34,7 @@ class UserService(BaseService):
         user = await self.session.scalar(query)
         if user is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        user.username = user_schema.username or user.username
         user.first_name = user_schema.first_name or user.first_name
         user.second_name = user_schema.second_name or user.second_name
         user.job_title = user_schema.job_title or user.job_title

@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
+    username: str
     first_name: str
     second_name: str
     job_title: str
@@ -19,6 +20,7 @@ class User(UserBase):
 
 
 class UserUpdate(BaseModel):
+    username: str | None = None
     first_name: str | None = None
     second_name: str | None = None
     job_title: str | None = None
