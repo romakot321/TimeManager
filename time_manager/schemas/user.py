@@ -6,7 +6,7 @@ class UserBase(BaseModel):
     first_name: str
     second_name: str
     job_title: str
-    hour_payment: int
+    hour_payment: int | None
 
     class Config:
         from_attributes = True

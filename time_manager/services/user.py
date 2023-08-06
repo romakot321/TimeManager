@@ -38,6 +38,7 @@ class UserService(BaseService):
         user.first_name = user_schema.first_name or user.first_name
         user.second_name = user_schema.second_name or user.second_name
         user.job_title = user_schema.job_title or user.job_title
+        user.hour_payment = user_schema.hour_payment or user.hour_payment
         self.session.add(user)
         try:
             await self.session.commit()
