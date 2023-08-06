@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class NoteSummary(BaseModel):
     minutes: int
+    payment: int | None = None
 
 
     class Config:

@@ -67,14 +67,16 @@ class NoteService(BaseService):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
     async def get_summary(self, user_id: int, year: int, month: int, part: int):
-        query = select(func.sum(tables.Note.minutes))
+        query = select(tables.User.hour_payment, func.sum(tables.Note.minutes))
+        query = query.select_from(tables.User)
+        query = query.join(tables.Note, tables.User.id == tables.Note.user_id)
         query = query.filter_by(user_id=user_id)
         month_start, month_end = self.get_date_range(year, month, part)
         query = query.filter(tables.Note.date >= month_start)
         query = query.filter(tables.Note.date <= month_end)
         try:
-            minutes = await self.session.scalar(query) or 0
-            return schemas.note.NoteSummary(minutes=minutes)
+            hour_payment, minutes = await self.session.scalar(query) or 0
+            return schemas.note.NoteSummary(minutes=minutes, payment=round(hour_payment * minutes / 60))
         except exc.IntegrityError:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 

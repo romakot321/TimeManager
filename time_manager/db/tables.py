@@ -16,6 +16,7 @@ class User(Base):
     first_name = Column(String, nullable=False)
     second_name = Column(String, nullable=False)
     job_title = Column(String, nullable=True)
+    hour_payment = Column(Integer)
 
 
 class Note(Base):
@@ -24,7 +25,7 @@ class Note(Base):
     user_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     date = Column(Date, nullable=False)
     minutes = Column(Integer, nullable=False, default=0)
-    text = Column(Text, nullable=False)
+    text = Column(Text, nullable=False, default="")
 
     __table_args__ = (
         PrimaryKeyConstraint('user_id', 'date'),

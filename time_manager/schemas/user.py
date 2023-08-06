@@ -6,6 +6,7 @@ class UserBase(BaseModel):
     first_name: str
     second_name: str
     job_title: str
+    hour_payment: int
 
     class Config:
         from_attributes = True
@@ -24,6 +25,7 @@ class UserUpdate(BaseModel):
     first_name: str | None = None
     second_name: str | None = None
     job_title: str | None = None
+    hour_payment: int | None = None
 
     class Config:
         from_attributes = True
