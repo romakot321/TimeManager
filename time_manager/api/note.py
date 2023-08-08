@@ -31,11 +31,11 @@ async def get_user_note_list(
 async def get_user_summary(
         user_id: int,
         year: int,
-        month: int,
-        part: int,
+        month: str,
+        part: str,
         service: NoteService = Depends()
 ):
-    return await service.get_summary(user_id, year, month, part)
+    return await service.get_summary(user_id, year, int(month), part)
 
 
 @router.get(

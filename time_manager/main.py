@@ -1,7 +1,8 @@
+import logging
+
 from fastapi import FastAPI
 
 from time_manager import api
-import logging
 
 
 logging.basicConfig(
@@ -14,10 +15,12 @@ logger.info('Logger start work')
 
 
 def create_application():
-    application = FastAPI(openapi_url='/api/openapi.json',
-                          docs_url='/api/docs',
-                          redoc_url='/api/redoc',
-                          logger=logger)
+    application = FastAPI(
+        openapi_url='/api/openapi.json',
+        docs_url='/api/docs',
+        redoc_url='/api/redoc',
+        logger=logger
+    )
     application.include_router(api.user.router)
     application.include_router(api.note.router)
     return application

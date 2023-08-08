@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+import datetime as dt
+
 
 class NoteSummary(BaseModel):
     minutes: int
@@ -20,6 +22,9 @@ class NoteCreate(NoteBase):
 
 
 class Note(NoteBase):
+    user_id: int
+    date: dt.date
+
     class Config:
         from_attributes = True
 
