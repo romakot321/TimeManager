@@ -21,8 +21,10 @@ def create_application():
         redoc_url='/api/redoc',
         logger=logger
     )
+    application.include_router(api.hello.router)
     application.include_router(api.user.router)
     application.include_router(api.note.router)
+    application.include_router(api.auth.router)
     return application
 
 

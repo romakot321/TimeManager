@@ -53,7 +53,7 @@ def run_init_models():
     print("Done")
 
 
-async def get_session() -> AsyncSession:
+async def get_session():
     session: AsyncSession = async_session()
     try:
         yield session

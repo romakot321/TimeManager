@@ -1,4 +1,1 @@
-from . import (
-    user,
-    note
-)
+from . import (auth, hello, note, user)

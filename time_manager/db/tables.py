@@ -13,6 +13,7 @@ class User(Base):
 
     id = Column(Integer, autoincrement=True, primary_key=True, index=True)
     username = Column(String, nullable=False, unique=True, index=True)
+    password = Column(String, nullable=False)
     first_name = Column(String, nullable=False)
     second_name = Column(String, nullable=False)
     job_title = Column(String, nullable=True)

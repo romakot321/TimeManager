@@ -1,10 +1,10 @@
-from time_manager.services.base import BaseService
-from time_manager.db import tables
-from time_manager.schemas import user as user_schemas
-
-from sqlalchemy import select, exc
 from fastapi import status
 from fastapi.exceptions import HTTPException
+from sqlalchemy import exc, select
+
+from time_manager.db import tables
+from time_manager.schemas import user as user_schemas
+from time_manager.services.base import BaseService
 
 
 class UserService(BaseService):
@@ -13,22 +13,25 @@ class UserService(BaseService):
         query = query.order_by(tables.User.id)
         return await self.session.scalars(query)
 
-    async def get(self, user_id: int):
+    async def get(self, user_id: int | None = None, username: str | None = None) -> tables.User:
         query = select(tables.User)
-        query = query.filter_by(id=user_id)
+        if user_id is not None:
+            query = query.filter_by(id=user_id)
+        if username is not None:
+            query = query.filter_by(username=username)
         user = await self.session.scalar(query)
         if user is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return user
 
-    async def create(self, user_schema: user_schemas.UserCreate):
-        user = tables.User(**user_schema.model_dump(exclude={'password'}))
+    async def create(self, user_schema: user_schemas.UserCreate) -> tables.User:
+        user = tables.User(**user_schema.model_dump())
         self.session.add(user)
         await self.session.commit()
         self.response.status_code = status.HTTP_201_CREATED
         return user
 
-    async def update(self, user_id: int, user_schema: user_schemas.UserUpdate):
+    async def update(self, user_id: int, user_schema: user_schemas.UserUpdate) -> tables.User:
         query = select(tables.User)
         query = query.filter_by(id=user_id)
         user = await self.session.scalar(query)

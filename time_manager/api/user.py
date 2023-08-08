@@ -2,35 +2,27 @@ import logging
 
 from fastapi import APIRouter, Depends
 from time_manager.services.user import UserService
+from time_manager.services.auth import AuthService
 from time_manager import schemas
+from time_manager.db import tables
 
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
     prefix='/api/users',
-    tags=["Hello"],
+    tags=["Users"],
 )
 
 
 @router.get(
-    '',
-    response_model=list[schemas.user.User]
-)
-async def get_user_list(
-        service: UserService = Depends()
-):
-    return await service.get_list()
-
-
-@router.get(
-    '/{user_id}',
+    '/me',
     response_model=schemas.user.User
 )
 async def get_user(
-        user_id: int,
-        service: UserService = Depends()
+        service: UserService = Depends(),
+        user: tables.User = Depends(AuthService.get_current_user)
 ):
-    return await service.get(user_id)
+    return await service.get(user.id)
 
 
 @router.post(
@@ -39,28 +31,28 @@ async def get_user(
 )
 async def create_user(
         user_schema: schemas.user.UserCreate,
-        service: UserService = Depends()
+        service: AuthService = Depends()
 ):
-    return await service.create(user_schema)
+    return await service.create_user(user_schema)
 
 
 @router.patch(
-    '/{user_id}',
+    '/me',
     response_model=schemas.user.User
 )
 async def patch_user(
-        user_id: int,
         user_schema: schemas.user.UserUpdate,
-        service: UserService = Depends()
+        service: AuthService = Depends(),
+        user: tables.User = Depends(AuthService.get_current_user)
 ):
-    return await service.update(user_id, user_schema)
+    return await service.update_user(user.id, user_schema)
 
 
 @router.delete(
-    '/{user_id}'
+    '/me'
 )
 async def delete_user(
-        user_id: int,
-        service: UserService = Depends()
+        service: UserService = Depends(),
+        user: tables.User = Depends(AuthService.get_current_user)
 ):
-    return await service.delete(user_id)
+    return await service.delete(user.id)
