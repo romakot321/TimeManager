@@ -11,6 +11,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=db
       - POSTGRES_HOST=postgres
+      - SECRET_KEY=${SECRET_KEY}
     networks:
       front_net:
       default:

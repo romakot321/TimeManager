@@ -4,9 +4,9 @@ import logging
 from fastapi import APIRouter, Depends
 
 from time_manager import schemas
+from time_manager.db import tables
 from time_manager.services.auth import AuthService
 from time_manager.services.note import NoteService
-from time_manager.db import tables
 
 
 logger = logging.getLogger(__name__)

@@ -1,10 +1,5 @@
-from sqlalchemy import Column
-from sqlalchemy import String
-from sqlalchemy import Integer
-from sqlalchemy import ForeignKey
-from sqlalchemy import Date
-from sqlalchemy import Text
-from sqlalchemy import PrimaryKeyConstraint
+from sqlalchemy import Column, Date, ForeignKey, Integer, PrimaryKeyConstraint, String, Text
+
 from time_manager.db.base import Base
 
 

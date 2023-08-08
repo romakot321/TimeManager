@@ -7,9 +7,9 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 
 from time_manager import schemas
+from time_manager.db.base import settings
 from time_manager.services.base import BaseService, get_session
 from time_manager.services.user import UserService
-from time_manager.db.base import settings
 
 
 logger = logging.getLogger(__name__)
