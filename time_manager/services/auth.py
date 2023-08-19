@@ -82,7 +82,7 @@ class AuthService(BaseService):
         return user
 
     async def authenticate_user(self, username: str, password: str):
-        user = await self.user_service.get(username=username)
+        user = await self.user_service.get(username=username, raise_exception=False)
         if not user or not self.verify_password(password, user.password):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
