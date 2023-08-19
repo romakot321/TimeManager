@@ -75,7 +75,7 @@ class AuthService(BaseService):
         try:
             await anext(session)
         except StopAsyncIteration:
-            await session.close()
+            open_session.close()
         user = await user_service.get(username=token_data.username)
         if user is None:
             raise credentials_exception
