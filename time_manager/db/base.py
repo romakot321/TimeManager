@@ -8,7 +8,6 @@ from sqlalchemy.orm import sessionmaker
 
 from time_manager.db.create import settings
 
-
 logger = logging.getLogger(__name__)
 
 DATABASE_URL = f'postgresql+asyncpg://' \
@@ -34,7 +33,9 @@ async_session = sessionmaker(
     engine, class_=AsyncSession,
     expire_on_commit=False,
     autoflush=False,
-    autocommit=False
+    autocommit=False,
+    pool_size=4,
+    max_overflow=0
 )
 
 from time_manager.db.tables import *
