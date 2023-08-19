@@ -13,7 +13,7 @@ class UserService(BaseService):
         query = query.order_by(tables.User.id)
         return await self.session.scalars(query)
 
-    async def get(self, user_id: int | None = None, username: str | None = None) -> tables.User:
+    async def get(self, user_id: int | None = None, username: str | None = None, raise_exception: bool = True) -> tables.User | None:
         query = select(tables.User)
         if user_id is not None:
             query = query.filter_by(id=user_id)
@@ -21,6 +21,8 @@ class UserService(BaseService):
             query = query.filter_by(username=username)
         user = await self.session.scalar(query)
         if user is None:
+            if not raise_exception:
+                return
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return user
 
