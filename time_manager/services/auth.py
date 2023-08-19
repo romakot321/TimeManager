@@ -11,7 +11,6 @@ from time_manager.db.base import settings
 from time_manager.services.base import BaseService, get_session
 from time_manager.services.user import UserService
 
-
 logger = logging.getLogger(__name__)
 
 ALGORITHM = "HS256"
@@ -55,7 +54,7 @@ class AuthService(BaseService):
         return encoded_jwt
 
     @classmethod
-    async def get_current_user(cls, token: str = Depends(oauth2_scheme)):
+    async def get_current_user(cls, token: str = Depends(oauth2_scheme), session=Depends(get_session)):
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
@@ -69,13 +68,7 @@ class AuthService(BaseService):
             token_data = schemas.token.TokenData(username=username)
         except JWTError:
             raise credentials_exception
-        session = get_session()
-        open_session = await anext(session)
-        user_service = UserService(open_session)
-        try:
-            await anext(session)
-        except StopAsyncIteration:
-            await open_session.close()
+        user_service = UserService(session)
         user = await user_service.get(username=token_data.username)
         if user is None:
             raise credentials_exception

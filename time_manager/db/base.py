@@ -34,8 +34,6 @@ async_session = sessionmaker(
     expire_on_commit=False,
     autoflush=False,
     autocommit=False,
-    pool_size=4,
-    max_overflow=0
 )
 
 from time_manager.db.tables import *
