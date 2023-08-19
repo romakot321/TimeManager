@@ -36,6 +36,8 @@ class NoteService(BaseService):
     ):
         query = select(tables.Note).filter_by(user_id=user_id, date=date)
         note: tables.Note = await self.session.scalar(query)
+        if note is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         if note_schema.minutes is not None:
             note.minutes = note_schema.minutes
         if note_schema.text is not None:
