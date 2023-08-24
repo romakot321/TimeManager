@@ -83,7 +83,7 @@ class AuthService(BaseService):
                 headers={"WWW-Authenticate": "Bearer"},
             )
 
-        access_token_expires = timedelta(minutes=self.ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token_expires = timedelta(minutes=int(self.ACCESS_TOKEN_EXPIRE_MINUTES))
         access_token = self.create_access_token(
             data={"sub": user.username}, expires_delta=access_token_expires
         )

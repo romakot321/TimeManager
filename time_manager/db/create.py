@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     postgres_password: str = 'password'
     postgres_user: str = 'postgres'
     SECRET_KEY: str = "47dc8432b9f362277983d166dab8c126c8b2ec20356b3499346e25a35f487d18"
-    SESSION_LIFETIME: int = 4 * 24 * 60
+    SESSION_LIFETIME: str = str(4 * 24 * 60)
 
 
 settings = Settings()
