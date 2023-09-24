@@ -15,6 +15,12 @@ class User(Base):
     hour_payment = Column(Integer)
 
 
+class Organization(Base):
+    __tablename__ = "organizations"
+    shortname = Column(String, nullable=False, primary_key=True, index=True)
+    fullname = Column(String, nullable=False)
+
+
 class Note(Base):
     __tablename__ = "notes"
 
@@ -27,3 +33,10 @@ class Note(Base):
         PrimaryKeyConstraint('user_id', 'date'),
         {},
     )
+
+
+class UserOrganization(Base):
+    id = Column(Integer, autoincrement=True, primary_key=True, index=True)
+    user_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    org_id = Column(ForeignKey('organizations.id', ondelete='CASCADE'), nullable=False)
+

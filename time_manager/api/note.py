@@ -28,17 +28,23 @@ async def get_user_note_list(
 
 
 @router.get(
-    '/me/summary/{year}-{month}/{part}',
-    response_model=schemas.note.NoteSummary
+    '/me/summary/{organization_shortname}/{year}-{month}/{part}',
+    response_model=schemas.note.NoteSummary,
+    description="""
+    Get total user work time and payment for a month
+    part: {1, 2} - first or last two weeks of month
+    organization: shortname of organization
+    """
 )
 async def get_user_summary(
         year: int,
         month: str,
         part: str,
+        organization_shortname: str,
         service: NoteService = Depends(),
         user: tables.User = Depends(AuthService.get_current_user)
 ):
-    return await service.get_summary(user.id, year, int(month), part)
+    return await service.get_summary(user.id, organization_shortname, year, int(month), part)
 
 
 @router.get(
